@@ -67,23 +67,9 @@ func inputAmount(prompt string) float64 {
 func calculateResult(current string, value float64, target string) float64 {
     var inUSD float64
 
-    switch current {
-    case "USD":
-        inUSD = value
-    case "EUR":
-        inUSD = value / USD_TO_EUR
-    case "RUB":
-        inUSD = value / USD_TO_RUB
-    }
+    var converterMap = map[string]float64{"USD": 1, "EUR": USD_TO_EUR, "RUB": USD_TO_RUB}
 
-    switch target {
-    case "USD":
-        return inUSD
-    case "EUR":
-        return inUSD * USD_TO_EUR
-    case "RUB":
-        return inUSD * USD_TO_RUB
-    }
-    return 0
+    inUSD = value / converterMap[current]
 
+    return inUSD * converterMap[target]
 }
