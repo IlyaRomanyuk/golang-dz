@@ -22,10 +22,10 @@ func main() {
 			result := printBookmarks(bookmarks)
 			fmt.Println(result)
 		case 2:
-			bookmarks = addBookmark(bookmarks)
+			addBookmark(bookmarks)
 			fmt.Println("Закладка успешно добавлена")
 		case 3:
-			bookmarks = removeBookmark(bookmarks)
+			removeBookmark(bookmarks)
 			fmt.Println("Закладка успешно удалена")
 		case 4:
 			break Loop
@@ -49,7 +49,7 @@ func printBookmarks (bookmarks bookmarkMap) string {
 	return result
 }
 
-func addBookmark (bookmarks bookmarkMap) bookmarkMap {
+func addBookmark (bookmarks bookmarkMap) {
 	var key string
 	var value string
 
@@ -59,17 +59,13 @@ func addBookmark (bookmarks bookmarkMap) bookmarkMap {
     fmt.Scan(&value)
 	
 	bookmarks[key] = value
-
-	return bookmarks
 }
 
-func removeBookmark(bookmarks bookmarkMap) bookmarkMap {
+func removeBookmark(bookmarks bookmarkMap) {
 	var key string
 
 	fmt.Print("Введите ключ закладдки для удаления:")
     fmt.Scan(&key)
 
 	delete(bookmarks, key)
-	
-	return bookmarks
 }
