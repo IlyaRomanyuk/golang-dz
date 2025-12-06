@@ -9,6 +9,8 @@ const USD_TO_EUR float64 = 0.8686
 const USD_TO_RUB float64 = 79.1
 const EUR_TO_RUB float64 = USD_TO_RUB / USD_TO_EUR
 
+type currenсyMap = map[string]float64
+
 func main() {
     fmt.Println("Добро пожаловать в валютный конвертер!")
 
@@ -16,7 +18,8 @@ func main() {
     value := inputAmount("Введите сумму:")
     target := inputCurrency("Введите целевую валюту:")
 
-    result := calculateResult(current, value, target)
+    var converterMap = currenсyMap{"USD": 1, "EUR": USD_TO_EUR, "RUB": USD_TO_RUB}
+    result := calculateResult(current, value, target, &converterMap)
 
     fmt.Printf("%.2f", result)
 }
@@ -64,12 +67,7 @@ func inputAmount(prompt string) float64 {
     return value
 }
 
-func calculateResult(current string, value float64, target string) float64 {
-    var inUSD float64
-
-    var converterMap = map[string]float64{"USD": 1, "EUR": USD_TO_EUR, "RUB": USD_TO_RUB}
-
-    inUSD = value / converterMap[current]
-
-    return inUSD * converterMap[target]
+func calculateResult(current string, value float64, target string, converterMap *currenсyMap) float64 {
+    inUSD := value / (*converterMap)[current]
+    return inUSD * (*converterMap)[target]
 }
