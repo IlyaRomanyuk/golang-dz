@@ -4,21 +4,25 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/IlyaRomanyuk/golang-dz/3-struct/api"
 	"github.com/IlyaRomanyuk/golang-dz/3-struct/bins"
-	"github.com/IlyaRomanyuk/golang-dz/3-struct/file"
 	"github.com/IlyaRomanyuk/golang-dz/3-struct/storage"
 )
 
 func main() {
+	var fileName string = "storage.json"
 	var binList bins.BinList
 	var bin1 = bins.NewBin("1", true, "test", time.Now())
 
 	binList = append(binList, bin1)
+	byteData := bins.ToByteSlice(binList)
 
-	file.GetFile()
-	api.GetApiList()
-	storage.GetStorage()
+	isSaveFile := storage.SaveBinList(byteData, fileName)
 
-	fmt.Println(binList, "binList")
+	if isSaveFile {
+		fmt.Println("Файл успешно сохранен")
+	}
+
+	readedFile := storage.ReadBinList(fileName)
+
+	fmt.Println(string(readedFile), "binList in string json")
 }
