@@ -5,7 +5,32 @@ import (
 	"os"
 )
 
-func SaveBinList(data []byte, fileName string) bool {
+type Db interface {
+	Read() ([]byte, error)
+}
+
+type StorageWithDb struct {
+	db Db
+}
+
+func NewStorage(db Db) *StorageWithDb {
+	return &StorageWithDb{
+		db,
+	}
+}
+
+func (db *StorageWithDb) ReadBinList() []byte {
+	dataFile, err := db.db.Read()
+
+	if err != nil {
+		fmt.Println("Ошибка чтения файла", err.Error())
+		return nil
+	}
+
+	return dataFile
+}
+
+func (db *StorageWithDb) SaveBinList(data []byte, fileName string) bool {
 	file, err := os.Create(fileName)
 
 	if err != nil {
@@ -23,15 +48,4 @@ func SaveBinList(data []byte, fileName string) bool {
 	}
 
 	return true
-}
-
-func ReadBinList(fileName string) []byte {
-	dataFile, err := os.ReadFile(fileName)
-
-	if err != nil {
-		fmt.Println("Ошибка чтения файла", err.Error())
-		return nil
-	}
-
-	return dataFile
 }

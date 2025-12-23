@@ -1,32 +1,42 @@
 package file
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-func ReadBinList(fileName string) []byte {
-	isJSON := isJSONFile(fileName)
+type FileJsonDb struct {
+	fileName string
+}
+
+func NewFileJsonDb(name string) *FileJsonDb {
+	return &FileJsonDb{
+		fileName: name,
+	}
+}
+
+func (db *FileJsonDb) Read() ([]byte, error) {
+	isJSON := isJSONFile(db.fileName)
 
 	if !isJSON {
 		fmt.Println("Ошибка в расширении файла, ожидается json")
-		return nil
+		return nil, errors.New("ожидается json")
 	}
 
-	dataFile, err := os.ReadFile(fileName)
+	dataFile, err := os.ReadFile(db.fileName)
 
 	if err != nil {
 		fmt.Println("Ошибка чтения файла", err.Error())
-		return nil
+		return nil, err
 	}
 
-	return dataFile
+	return dataFile, nil
 }
 
 func isJSONFile(filename string) bool {
 	ext := strings.ToLower(filepath.Ext(filename))
-	fmt.Println(ext, "-----ext-----")
 	return ext == ".json"
 }
