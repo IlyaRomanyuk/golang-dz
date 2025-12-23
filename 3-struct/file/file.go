@@ -36,6 +36,26 @@ func (db *FileJsonDb) Read() ([]byte, error) {
 	return dataFile, nil
 }
 
+func (db *FileJsonDb) Write(data []byte) bool {
+	file, err := os.Create(db.fileName)
+
+	if err != nil {
+		fmt.Println("Ошибка создания файла", err.Error())
+		return false
+	}
+
+	defer file.Close()
+
+	_, err = file.Write(data)
+
+	if err != nil {
+		fmt.Println("Ошибка записи в файл", err.Error())
+		return false
+	}
+
+	return true
+}
+
 func isJSONFile(filename string) bool {
 	ext := strings.ToLower(filepath.Ext(filename))
 	return ext == ".json"

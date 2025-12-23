@@ -2,11 +2,11 @@ package storage
 
 import (
 	"fmt"
-	"os"
 )
 
 type Db interface {
 	Read() ([]byte, error)
+	Write([]byte) bool
 }
 
 type StorageWithDb struct {
@@ -30,22 +30,8 @@ func (db *StorageWithDb) ReadBinList() []byte {
 	return dataFile
 }
 
-func (db *StorageWithDb) SaveBinList(data []byte, fileName string) bool {
-	file, err := os.Create(fileName)
+func (db *StorageWithDb) SaveBinList(data []byte) bool {
+	isFileSaved := db.db.Write(data)
 
-	if err != nil {
-		fmt.Println("Ошибка создания файла", err.Error())
-		return false
-	}
-
-	defer file.Close()
-
-	_, err = file.Write(data)
-
-	if err != nil {
-		fmt.Println("Ошибка записи в файл", err.Error())
-		return false
-	}
-
-	return true
+	return isFileSaved
 }
