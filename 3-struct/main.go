@@ -27,15 +27,11 @@ func main() {
 	delete := flag.Bool("delete", false, "Удаление")
 	get := flag.Bool("get", false, "Получение бина по id")
 	list := flag.Bool("list", false, "Список бинов")
-
 	fileName := flag.String("file", "storage.json", "Название файла")
 	name := flag.String("name", "test", "Название бина")
-
 	id := flag.String("id", "", "Id бина")
 
 	flag.Parse()
-
-	fmt.Println(*fileName)
 
 	config := config.NewConfig()
 	api := api.NewApi(config)
